@@ -1,0 +1,1279 @@
+/* ==========================================================================
+   초등 3학년 단소 시뮬레이터 (Danso Simulator) - 통합 스타일시트
+   Korean Traditional Aesthetics + Modern Glassmorphic UI
+   ========================================================================== */
+
+:root {
+    /* Color Palette */
+    --bg-primary: #0a1612;
+    --bg-surface: rgba(18, 38, 32, 0.78);
+    --bg-surface-elevated: rgba(26, 52, 44, 0.88);
+    --bg-surface-light: rgba(255, 255, 255, 0.08);
+
+    --border-color: rgba(167, 243, 208, 0.16);
+    --border-highlight: rgba(52, 211, 153, 0.45);
+
+    --text-primary: #f0fdf4;
+    --text-secondary: #a7f3d0;
+    --text-muted: #6ee7b7;
+    --text-sub: #94a3b8;
+
+    /* Traditional Accents */
+    --jade-400: #34d399;
+    --jade-500: #10b981;
+    --jade-600: #059669;
+    --bamboo-gold: #e2b078;
+    --bamboo-light: #faedcd;
+    --bamboo-dark: #78350f;
+    --rose-accent: #f43f5e;
+    --amber-accent: #f59e0b;
+
+    /* Hole Dimensions */
+    --hole-size: 68px;
+    --thumb-hole-size: 76px;
+
+    /* Transitions & Shadows */
+    --transition-fast: 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-glass: 0 16px 36px -8px rgba(0, 0, 0, 0.55), 0 4px 12px rgba(0, 0, 0, 0.35);
+    --shadow-glow: 0 0 24px rgba(16, 185, 129, 0.35);
+}
+
+/* Base Reset */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* Background Layers */
+.bg-layer.hanji-texture {
+    position: fixed;
+    inset: 0;
+    opacity: 0.04;
+    background-image: radial-gradient(#fff 1px, transparent 1px), radial-gradient(#fff 1px, #0a1612 1px);
+    background-size: 24px 24px;
+    background-position: 0 0, 12px 12px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.bg-gradient-glow {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 75% 30%, rgba(16, 185, 129, 0.12) 0%, transparent 60%),
+        radial-gradient(circle at 20% 75%, rgba(226, 176, 120, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Header */
+.app-header {
+    position: relative;
+    z-index: 20;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 28px;
+    background: rgba(10, 22, 18, 0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-icon {
+    font-size: 2.2rem;
+    filter: drop-shadow(0 2px 8px rgba(16, 185, 129, 0.4));
+}
+
+.brand-title {
+    font-family: 'Gowun Batang', serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #f0fdf4;
+    background: linear-gradient(135deg, #ffffff 40%, #a7f3d0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.brand-sub {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    opacity: 0.85;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Mode Switcher Pill */
+.mode-selector-pill {
+    display: flex;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 4px;
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+}
+
+.mode-pill-item {
+    position: relative;
+    cursor: pointer;
+}
+
+.mode-pill-item input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.mode-pill-item .pill-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: 999px;
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: var(--text-sub);
+    transition: var(--transition-fast);
+}
+
+.mode-pill-item input:checked+.pill-label {
+    background: linear-gradient(135deg, var(--jade-600), var(--jade-500));
+    color: #ffffff;
+    font-weight: 700;
+    box-shadow: 0 2px 10px rgba(16, 185, 129, 0.35);
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: 12px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: var(--transition-fast);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: var(--border-highlight);
+    transform: translateY(-1px);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-sm {
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    border-radius: 8px;
+}
+
+/* Main Workspace Layout */
+.simul-workspace {
+    position: relative;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: minmax(360px, 460px) 1fr;
+    gap: 28px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px 28px 48px;
+    min-height: calc(100vh - 75px);
+}
+
+/* ==========================================================================
+   🌟 [핵심 요구사항 1번] 좌상단 제1공(뒷구멍) 플로팅 위젯
+   ========================================================================== */
+.hole1-floating-card {
+    position: fixed;
+    z-index: 100;
+    width: 220px;
+    background: var(--bg-surface-elevated);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 16px;
+    box-shadow: var(--shadow-glass);
+    transition: border-color var(--transition-smooth), box-shadow var(--transition-smooth);
+    touch-action: none;
+}
+
+.hole1-floating-card.locked {
+    border: 2px solid var(--border-highlight);
+}
+
+.hole1-floating-card.unlocked {
+    border: 2px dashed #f59e0b;
+    box-shadow: 0 0 24px rgba(245, 158, 11, 0.35);
+    animation: pulseBorder 2s infinite ease-in-out;
+}
+
+@keyframes pulseBorder {
+
+    0%,
+    100% {
+        border-color: #f59e0b;
+    }
+
+    50% {
+        border-color: #fef08a;
+    }
+}
+
+.pad-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: grab;
+}
+
+.hole1-floating-card.unlocked .pad-header {
+    cursor: grabbing;
+}
+
+.pad-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.drag-indicator {
+    font-size: 1.1rem;
+    color: var(--amber-accent);
+}
+
+.pad-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.pad-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    border: 1px solid var(--border-color);
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.btn-chip:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.btn-lock {
+    background: rgba(16, 185, 129, 0.18);
+    border-color: rgba(16, 185, 129, 0.4);
+}
+
+.hole1-floating-card.unlocked .btn-lock {
+    background: rgba(245, 158, 11, 0.25);
+    border-color: var(--amber-accent);
+    color: #fef08a;
+}
+
+.btn-reset {
+    padding: 4px 7px;
+}
+
+.pad-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-top: 12px;
+}
+
+.pad-finger-guide {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: rgba(16, 185, 129, 0.12);
+    padding: 3px 10px;
+    border-radius: 999px;
+}
+
+.pad-sub-hint {
+    font-size: 0.74rem;
+    color: var(--text-sub);
+}
+
+/* ==========================================================================
+   단소 지공 (Finger Holes) 스타일
+   ========================================================================== */
+.danso-hole {
+    position: relative;
+    width: var(--hole-size);
+    height: var(--hole-size);
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    transition: all var(--transition-fast);
+    outline: none;
+}
+
+.danso-hole.thumb-hole {
+    width: var(--thumb-hole-size);
+    height: var(--thumb-hole-size);
+}
+
+/* 지공: 열린 상태 (Open) */
+.danso-hole.open {
+    background: radial-gradient(circle at 45% 45%, #18181b 30%, #09090b 80%);
+    box-shadow: inset 0 6px 14px rgba(0, 0, 0, 0.9),
+        inset 0 0 8px rgba(0, 0, 0, 0.8),
+        0 0 0 3px rgba(226, 176, 120, 0.45),
+        0 4px 10px rgba(0, 0, 0, 0.5);
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.danso-hole.open:hover {
+    transform: scale(1.04);
+    box-shadow: inset 0 6px 14px rgba(0, 0, 0, 0.9),
+        0 0 0 4px var(--bamboo-gold),
+        0 0 16px rgba(226, 176, 120, 0.4);
+}
+
+/* 지공: 닫힌 상태 (Closed - 손가락으로 꽉 막음) */
+.danso-hole.closed {
+    background: radial-gradient(circle at 35% 35%, #34d399 10%, #059669 65%, #064e3b 100%);
+    box-shadow: 0 0 0 3px #10b981,
+        0 0 24px rgba(16, 185, 129, 0.75),
+        inset 0 -4px 8px rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+    transform: scale(0.96);
+}
+
+.danso-hole.closed::after {
+    content: '막힘';
+    position: absolute;
+    bottom: -20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--jade-400);
+    letter-spacing: -0.02em;
+}
+
+.hole-number {
+    font-size: 1.15rem;
+    font-weight: 800;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.hole-status-text {
+    position: absolute;
+    bottom: 8px;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.hole-status-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    bottom: 8px;
+    background: currentColor;
+    opacity: 0.6;
+}
+
+/* 제5공 비활성 스타일 */
+.danso-hole.end-hole {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   왼쪽 대시보드 (게이지, 율명 카드, 연습곡)
+   ========================================================================== */
+.left-control-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.panel-card {
+    background: var(--bg-surface);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    box-shadow: var(--shadow-glass);
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.panel-icon {
+    font-size: 1.3rem;
+}
+
+.panel-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.badge {
+    margin-left: auto;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-sub);
+}
+
+.badge-valid {
+    background: rgba(16, 185, 129, 0.2);
+    color: var(--jade-400);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.badge-yeokchwi {
+    background: rgba(244, 63, 94, 0.2);
+    color: #fda4af;
+    border: 1px solid rgba(244, 63, 94, 0.4);
+    animation: pulseYeokchwi 1.2s infinite;
+}
+
+@keyframes pulseYeokchwi {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.badge-invalid {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fde68a;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* 바람 세기 게이지 */
+.wind-gauge-track {
+    position: relative;
+    width: 100%;
+    height: 22px;
+    background: rgba(0, 0, 0, 0.45);
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.wind-gauge-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #06b6d4);
+    border-radius: 999px;
+    transition: width 0.08s ease-out;
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+}
+
+.gauge-markers {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    align-items: center;
+}
+
+.marker {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.panel-caption {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+/* 대형 율명 카드 */
+.note-display-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(145deg, rgba(20, 44, 37, 0.9), rgba(12, 26, 22, 0.95));
+    border: 2px solid var(--border-highlight);
+    box-shadow: var(--shadow-glow);
+    padding: 24px;
+}
+
+.note-card-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.sub-label {
+    font-size: 0.8rem;
+    color: var(--text-sub);
+}
+
+.note-center-display {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin: 10px 0;
+}
+
+.note-han {
+    font-family: 'Gowun Batang', serif;
+    font-size: 4.8rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #ffffff;
+    text-shadow: 0 0 30px rgba(52, 211, 153, 0.6);
+}
+
+.note-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.note-kor {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--jade-400);
+}
+
+.note-solfege {
+    font-size: 1rem;
+    color: var(--bamboo-light);
+    font-weight: 500;
+}
+
+.note-card-bottom {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 6px 16px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    margin-top: 8px;
+}
+
+.guide-prefix {
+    color: var(--text-muted);
+}
+
+.note-guide-text {
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.note-display-card.invalid-note {
+    border-color: rgba(245, 158, 11, 0.5);
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.25);
+}
+
+.note-display-card.invalid-note .note-han {
+    color: #fde68a;
+    text-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+}
+
+/* 연습곡 카드 */
+.song-practice-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-select {
+    padding: 8px 12px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-size: 0.88rem;
+    outline: none;
+    cursor: pointer;
+}
+
+.form-select-sm {
+    padding: 4px 8px;
+    font-size: 0.82rem;
+}
+
+.song-view.hidden {
+    display: none;
+}
+
+.song-view-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.song-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--bamboo-light);
+}
+
+.song-notes-container {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 8px 4px 16px;
+    scroll-behavior: smooth;
+}
+
+/* 정간보 스타일 박스 */
+.song-note-block {
+    flex: 0 0 54px;
+    height: 72px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1.5px solid var(--border-color);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.song-note-block:hover {
+    border-color: var(--border-highlight);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.song-note-block.current {
+    border-color: var(--jade-400);
+    background: rgba(16, 185, 129, 0.25);
+    box-shadow: 0 0 16px rgba(16, 185, 129, 0.5);
+    transform: translateY(-3px);
+}
+
+.song-note-block.success {
+    border-color: #38bdf8;
+    background: rgba(56, 189, 248, 0.3);
+}
+
+.note-han-small {
+    font-family: 'Gowun Batang', serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.note-lyrics {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+/* 간편 조작 설정 카드 */
+.settings-compact-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 0.85rem;
+}
+
+.setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.label-title {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.label-val {
+    color: var(--jade-400);
+    font-weight: 700;
+    margin-left: 6px;
+}
+
+.form-range {
+    width: 140px;
+    accent-color: var(--jade-500);
+    cursor: pointer;
+}
+
+.volume-row {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 10px;
+}
+
+.slider-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 48%;
+}
+
+.setting-sublabel {
+    font-size: 0.75rem;
+    color: var(--text-sub);
+}
+
+.setting-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
+
+/* ==========================================================================
+   오른쪽 단소 실물 인터랙티브 영역 (대나무 관)
+   ========================================================================== */
+.danso-stage-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 10px;
+}
+
+.danso-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 480px;
+}
+
+/* 취구 (Mouthpiece) */
+.danso-mouthpiece {
+    position: relative;
+    width: 84px;
+    height: 48px;
+    background: linear-gradient(180deg, #c49a6c 0%, #b08253 100%);
+    border-radius: 42px 42px 0 0;
+    box-shadow: inset 0 4px 8px rgba(255, 255, 255, 0.25),
+        0 4px 14px rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 6px;
+    z-index: 5;
+}
+
+.mouthpiece-lip {
+    position: absolute;
+    top: 0;
+    width: 68px;
+    height: 14px;
+    border-radius: 999px;
+    background: #e2b078;
+    box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* U자형 취구 홈 */
+.mouthpiece-hole {
+    position: absolute;
+    top: 6px;
+    width: 18px;
+    height: 22px;
+    background: #18181b;
+    border-radius: 0 0 10px 10px;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.9);
+}
+
+.mouthpiece-label {
+    position: absolute;
+    top: -24px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--bamboo-light);
+    white-space: nowrap;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 2px 8px;
+    border-radius: 999px;
+}
+
+/* 취구 입김 파티클 증기 효과 */
+.mouthpiece-vapor {
+    position: absolute;
+    top: -12px;
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle, rgba(167, 243, 208, 0.6) 0%, transparent 70%);
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+}
+
+.mouthpiece-vapor.active {
+    opacity: 1;
+    animation: vaporFlow 0.8s infinite ease-out;
+}
+
+@keyframes vaporFlow {
+    0% {
+        transform: translateY(0) scale(0.6);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: translateY(-24px) scale(1.4);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: translateY(-40px) scale(2.0);
+        opacity: 0;
+    }
+}
+
+/* 대나무 본체 */
+.danso-body {
+    position: relative;
+    width: 90px;
+    height: 600px;
+    background: linear-gradient(90deg,
+            #7c5631 0%,
+            #a8794c 18%,
+            #d8a876 45%,
+            #e9c499 55%,
+            #a8794c 82%,
+            #6d4724 100%);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65),
+        inset 0 0 16px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 0 0 16px 16px;
+    padding-top: 24px;
+}
+
+/* 대나무 마디 (Nodes) */
+.bamboo-node {
+    position: absolute;
+    left: -4px;
+    right: -4px;
+    height: 8px;
+    background: linear-gradient(180deg, #593517 0%, #3e220c 50%, #7c5631 100%);
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+.node-1 {
+    top: 70px;
+}
+
+.node-2 {
+    top: 200px;
+}
+
+.node-mid {
+    top: 340px;
+}
+
+.node-3 {
+    top: 460px;
+}
+
+.node-4 {
+    top: 560px;
+}
+
+/* 지공 스테이션 (지공 + 손가락 안내선) */
+.hole-station {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 4;
+}
+
+.station-2 {
+    top: 105px;
+}
+
+.station-3 {
+    top: 225px;
+}
+
+.station-4 {
+    top: 375px;
+}
+
+.station-5 {
+    top: 495px;
+}
+
+/* 손가락 가이드 태그 (Callout) */
+.finger-callout {
+    position: absolute;
+    left: 105px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(12, 26, 22, 0.88);
+    backdrop-filter: blur(8px);
+    padding: 6px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    white-space: nowrap;
+    transition: var(--transition-fast);
+}
+
+.finger-callout::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent rgba(12, 26, 22, 0.88) transparent transparent;
+}
+
+.finger-name {
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.hole-tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--jade-400);
+    background: rgba(16, 185, 129, 0.15);
+    padding: 2px 6px;
+    border-radius: 6px;
+}
+
+.finger-callout.inactive {
+    opacity: 0.6;
+}
+
+/* 단소 하단 림 */
+.danso-bottom-rim {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 12px;
+    background: #3e220c;
+    border-radius: 0 0 16px 16px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* 하단 오른손 받침 가이드 */
+.danso-support-guide {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   모달 (Modal) 스타일
+   ========================================================================== */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    transition: opacity var(--transition-fast);
+}
+
+.modal-backdrop.hidden {
+    display: none;
+}
+
+.modal-card {
+    background: #0f241d;
+    border: 1px solid var(--border-highlight);
+    border-radius: 24px;
+    width: 100%;
+    max-width: 780px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 28px;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.8);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 14px;
+}
+
+.modal-title {
+    font-family: 'Gowun Batang', serif;
+    font-size: 1.35rem;
+    color: #ffffff;
+}
+
+.btn-close {
+    background: transparent;
+    border: none;
+    font-size: 1.4rem;
+    color: var(--text-sub);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.btn-close:hover {
+    color: #ffffff;
+}
+
+.modal-intro {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 18px;
+}
+
+.fingering-table-wrap {
+    overflow-x: auto;
+    margin-bottom: 22px;
+}
+
+.fingering-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    text-align: center;
+}
+
+.fingering-table th,
+.fingering-table td {
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fingering-table th {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.fingering-table td {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.highlight-han {
+    font-family: 'Gowun Batang', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--jade-400);
+}
+
+.dot.closed {
+    color: var(--jade-400);
+    font-weight: 900;
+}
+
+.dot.open {
+    color: var(--text-sub);
+}
+
+.guide-tips {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: 16px;
+    padding: 16px;
+    font-size: 0.88rem;
+}
+
+.guide-tips h3 {
+    color: #fef08a;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+}
+
+.guide-tips ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-left: 4px;
+}
+
+/* 토스트 메시지 */
+.app-toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(40px);
+    background: rgba(15, 36, 29, 0.92);
+    backdrop-filter: blur(12px);
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 1px solid var(--border-highlight);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 9999;
+}
+
+.app-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ==========================================================================
+   반응형 미디어 쿼리 (Tablet & Mobile)
+   ========================================================================== */
+@media (max-width: 960px) {
+    .simul-workspace {
+        grid-template-columns: 1fr;
+        padding: 16px;
+        gap: 20px;
+    }
+
+    .danso-stage-wrap {
+        order: -1;
+        /* 태블릿에서는 단소를 화면 중심 상단에 배치 */
+    }
+
+    .danso-body {
+        height: 520px;
+    }
+
+    .station-2 {
+        top: 90px;
+    }
+
+    .station-3 {
+        top: 195px;
+    }
+
+    .station-4 {
+        top: 325px;
+    }
+
+    .station-5 {
+        top: 430px;
+    }
+
+    .node-1 {
+        top: 60px;
+    }
+
+    .node-2 {
+        top: 170px;
+    }
+
+    .node-mid {
+        top: 295px;
+    }
+
+    .node-3 {
+        top: 400px;
+    }
+
+    .node-4 {
+        top: 490px;
+    }
+
+    .finger-callout {
+        left: 95px;
+        padding: 4px 10px;
+    }
+
+    .finger-name {
+        font-size: 0.76rem;
+    }
+
+    .hole1-floating-card {
+        width: 190px;
+    }
+}

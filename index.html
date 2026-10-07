@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>초등 3학년 단소 시뮬레이터 (Danso Simulator) - 입김 & 터치 하이브리드</title>
+    <meta name="description" content="초등학교 3학년 학생들을 위한 대화형 단소 시뮬레이터. 마이크에 입김을 불며 태블릿 화면의 지공을 터치하는 하이브리드 연주와 드래그 가능한 제1공(뒷구멍) 맞춤형 위치 조절 지원.">
+    <meta name="keywords" content="단소, 단소시뮬레이터, 초등음악, 국악, 정간보, 입김마이크, 하이브리드악기">
+    <meta name="theme-color" content="#132e27">
+    
+    <!-- Google Fonts: Gowun Batang (전통 미학 서체) & Noto Sans KR (가독성 폰트) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 배경 장식 (전통 한지 & 대나무 숲 분위기) -->
+    <div class="bg-layer hanji-texture"></div>
+    <div class="bg-gradient-glow"></div>
+
+    <!-- 최상단 헤더 네비게이션 바 -->
+    <header class="app-header">
+        <div class="brand">
+            <span class="brand-icon">🎋</span>
+            <div class="brand-text">
+                <h1 class="brand-title">초등 3학년 단소 시뮬레이터</h1>
+                <p class="brand-sub">바람과 손가락으로 빚어내는 맑은 우리 소리</p>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <!-- 모드 전환 (하이브리드 vs 터치) -->
+            <div class="mode-selector-pill" role="radiogroup" aria-label="연주 모드 선택">
+                <label class="mode-pill-item">
+                    <input type="radio" name="playMode" value="hybrid" checked>
+                    <span class="pill-label">
+                        <span class="icon">🌬️</span>
+                        <span class="text">하이브리드 모드 (입김+터치)</span>
+                    </span>
+                </label>
+                <label class="mode-pill-item">
+                    <input type="radio" name="playMode" value="touch">
+                    <span class="pill-label">
+                        <span class="icon">👆</span>
+                        <span class="text">터치 전용 모드</span>
+                    </span>
+                </label>
+            </div>
+
+            <button id="btn-guide-modal" class="btn btn-secondary" title="단소 운지법 한눈에 보기">
+                <span class="icon">📖</span>
+                <span>운지법 안내</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- 메인 연주 영역 -->
+    <main class="simul-workspace">
+
+        <!-- 🌟 [핵심 요구사항 1번] 좌상단 제1공(뒷구멍) 플로팅 위젯 (드래그 & 잠금 지원) -->
+        <div id="hole1-pad" class="hole1-floating-card locked" aria-label="제1공 뒷구멍 조작 패널">
+            <div class="pad-header" id="hole1-drag-handle">
+                <div class="pad-title-wrap">
+                    <span class="drag-indicator" title="잠금 해제 시 드래그하여 이동">✥</span>
+                    <span class="pad-title">제1공 (뒷구멍)</span>
+                </div>
+                <div class="pad-controls">
+                    <button id="btn-hole1-lock" class="btn-chip btn-lock" title="위치 고정 토글">
+                        <span class="icon">🔒</span>
+                        <span class="btn-text">위치 잠김</span>
+                    </button>
+                    <button id="btn-hole1-reset" class="btn-chip btn-reset" title="원래 위치로 초기화">
+                        <span class="icon">🔄</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="pad-body">
+                <div class="pad-finger-guide">👈 왼손 엄지손가락</div>
+                
+                <!-- 제1공 인터랙티브 버튼 -->
+                <button id="hole-1" class="danso-hole thumb-hole open" aria-label="제1공 뒷구멍 열림/닫힘" aria-pressed="false">
+                    <span class="hole-number">1</span>
+                    <span class="hole-status-text">열림</span>
+                </button>
+
+                <div class="pad-sub-hint" id="hole1-lock-status">🔒 고정됨</div>
+            </div>
+        </div>
+
+        <!-- 왼쪽/중앙 보조 패널: 현재 음 & 바람 게이지 & 연습곡 -->
+        <section class="left-control-dashboard">
+            <!-- 1. 바람 세기 게이지 (입김 감지 피드백) -->
+            <div class="panel-card wind-panel">
+                <div class="panel-header">
+                    <span class="panel-icon">💨</span>
+                    <h2 class="panel-title">내 입김 세기 (호흡 게이지)</h2>
+                    <span id="wind-badge" class="badge">바람 없음</span>
+                </div>
+                <div class="wind-gauge-track">
+                    <div id="wind-gauge-fill" class="wind-gauge-fill" style="width: 0%;"></div>
+                    <div class="gauge-markers">
+                        <span class="marker marker-threshold" title="소리가 나기 시작하는 기준">기준</span>
+                        <span class="marker marker-yeokchwi" title="역취(고음)로 전환되는 기준">역취(센바람)</span>
+                    </div>
+                </div>
+                <p id="wind-text" class="panel-caption">마이크에 입김을 "후~" 하고 불어보세요!</p>
+            </div>
+
+            <!-- 2. 대형 율명(音) 카드 -->
+            <div id="note-card" class="panel-card note-display-card valid-note">
+                <div class="note-card-top">
+                    <span class="sub-label">현재 소리 나는 음 (율명)</span>
+                    <span id="note-status-badge" class="badge badge-valid">🌿 평취 (맑은소리)</span>
+                </div>
+                <div class="note-center-display">
+                    <div id="note-han" class="note-han">潢</div>
+                    <div class="note-meta">
+                        <div id="note-kor" class="note-kor">황</div>
+                        <div id="note-solfege" class="note-solfege">미♭ (Eb5)</div>
+                    </div>
+                </div>
+                <div class="note-card-bottom">
+                    <span class="guide-prefix">👉 운지 안내:</span>
+                    <span id="note-guide" class="note-guide-text">모두 열림</span>
+                </div>
+            </div>
+
+            <!-- 3. 초등 3학년 연습곡 플레이어 -->
+            <div class="panel-card song-practice-card">
+                <div class="panel-header">
+                    <span class="panel-icon">🎵</span>
+                    <h2 class="panel-title">초등 3학년 단소 연습곡</h2>
+                    <select id="song-select" class="form-select" aria-label="연습곡 선택">
+                        <option value="">-- 연습할 곡을 선택해보세요 --</option>
+                    </select>
+                </div>
+
+                <div id="song-view" class="song-view hidden">
+                    <div class="song-view-header">
+                        <h3 id="song-title" class="song-title">곡 제목</h3>
+                        <div class="song-nav-buttons">
+                            <button id="btn-prev-note" class="btn btn-sm btn-outline">◀ 이전 음</button>
+                            <button id="btn-next-note" class="btn btn-sm btn-outline">다음 음 ▶</button>
+                        </div>
+                    </div>
+                    <!-- 정간보 스타일 박스 -->
+                    <div id="song-notes-container" class="song-notes-container" tabindex="0" aria-label="악보 정간보 음표들">
+                        <!-- 동적으로 채워짐 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. 간편 조작 설정 (입력 방식 & 감도 & 볼륨) -->
+            <div class="panel-card settings-compact-card">
+                <div class="setting-row">
+                    <label for="input-mode-select" class="setting-label">
+                        <span class="label-title">지공 터치 방식:</span>
+                    </label>
+                    <select id="input-mode-select" class="form-select form-select-sm">
+                        <option value="hold" selected>🖐️ 누르고 있기 (실제 단소 연주)</option>
+                        <option value="toggle">🔘 원터치 고정 (초보자 추천)</option>
+                    </select>
+                </div>
+
+                <div class="setting-row">
+                    <label for="mic-sensitivity" class="setting-label">
+                        <span class="label-title">마이크 입김 감도:</span>
+                        <span id="sensitivity-val" class="label-val">3단계</span>
+                    </label>
+                    <input type="range" id="mic-sensitivity" min="1" max="5" value="3" class="form-range" aria-label="마이크 감도 슬라이더">
+                </div>
+
+                <div class="setting-row volume-row">
+                    <div class="slider-group">
+                        <label for="volume-slider" class="setting-sublabel">소리 크기</label>
+                        <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.85" class="form-range" aria-label="음량 조절">
+                    </div>
+                    <div class="slider-group">
+                        <label for="reverb-slider" class="setting-sublabel">한옥 대청마루 울림(잔향)</label>
+                        <input type="range" id="reverb-slider" min="0" max="0.8" step="0.05" value="0.35" class="form-range" aria-label="잔향 조절">
+                    </div>
+                </div>
+
+                <div class="setting-actions">
+                    <button id="btn-all-open" class="btn btn-sm btn-secondary" title="모든 지공을 엽니다">
+                        <span>✨ 모두 열기 (황: 潢)</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 오른쪽 단소 실물 인터랙티브 영역 (황죽/오죽 대나무 관) -->
+        <section class="danso-stage-wrap" aria-label="단소 몸통 및 앞면 지공">
+            <div class="danso-wrapper">
+                <!-- 취구 (Mouthpiece) & 입김 파티클 애니메이션 -->
+                <div class="danso-mouthpiece" id="danso-mouthpiece" title="단소 취구 (입술 대는 곳)">
+                    <div class="mouthpiece-lip"></div>
+                    <div class="mouthpiece-hole"></div>
+                    <div class="mouthpiece-vapor" id="mouthpiece-vapor"></div>
+                    <span class="mouthpiece-label">취구 (바람 부는 곳)</span>
+                </div>
+
+                <!-- 대나무 본체 -->
+                <div class="danso-body">
+                    <!-- 대나무 마디 장식들 -->
+                    <div class="bamboo-node node-1"></div>
+                    <div class="bamboo-node node-2"></div>
+                    <div class="bamboo-node node-3"></div>
+                    <div class="bamboo-node node-4"></div>
+
+                    <!-- 앞면 지공들 배치 -->
+                    <!-- 제2공 (왼손 검지) -->
+                    <div class="hole-station station-2">
+                        <div class="finger-callout">
+                            <span class="finger-name">왼손 검지(식지)</span>
+                            <span class="hole-tag">제2공</span>
+                        </div>
+                        <button id="hole-2" class="danso-hole front-hole open" aria-label="제2공 열림/닫힘" aria-pressed="false">
+                            <span class="hole-number">2</span>
+                            <span class="hole-status-dot"></span>
+                        </button>
+                    </div>
+
+                    <!-- 제3공 (왼손 중지) -->
+                    <div class="hole-station station-3">
+                        <div class="finger-callout">
+                            <span class="finger-name">왼손 중지(장지)</span>
+                            <span class="hole-tag">제3공</span>
+                        </div>
+                        <button id="hole-3" class="danso-hole front-hole open" aria-label="제3공 열림/닫힘" aria-pressed="false">
+                            <span class="hole-number">3</span>
+                            <span class="hole-status-dot"></span>
+                        </button>
+                    </div>
+
+                    <!-- 대나무 중간 마디 -->
+                    <div class="bamboo-node node-mid"></div>
+
+                    <!-- 제4공 (오른손 중지) -->
+                    <div class="hole-station station-4">
+                        <div class="finger-callout">
+                            <span class="finger-name">오른손 중지(장지)</span>
+                            <span class="hole-tag">제4공</span>
+                        </div>
+                        <button id="hole-4" class="danso-hole front-hole open" aria-label="제4공 열림/닫힘" aria-pressed="false">
+                            <span class="hole-number">4</span>
+                            <span class="hole-status-dot"></span>
+                        </button>
+                    </div>
+
+                    <!-- 제5공 (항상 열림) -->
+                    <div class="hole-station station-5">
+                        <div class="finger-callout inactive">
+                            <span class="finger-name">안 막음 (항상 열림)</span>
+                            <span class="hole-tag">제5공</span>
+                        </div>
+                        <button id="hole-5" class="danso-hole front-hole end-hole open" aria-label="제5공 (항상 열림)" disabled>
+                            <span class="hole-number">5</span>
+                            <span class="hole-status-dot"></span>
+                        </button>
+                    </div>
+
+                    <!-- 하단 단소 끝부분 -->
+                    <div class="danso-bottom-rim"></div>
+                </div>
+
+                <!-- 오른손 단소 받침 가이드 표시 -->
+                <div class="danso-support-guide">
+                    <span class="icon">✋</span>
+                    <span class="guide-text">오른손 엄지와 검지로 단소 아래 몸통을 살며시 받쳐줍니다.</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 단소 운지법 한눈에 보기 모달 -->
+    <div id="modal-guide" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="guide-title">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h2 id="guide-title" class="modal-title">🎋 초등 3학년 단소 5음계 운지법</h2>
+                <button id="btn-close-modal" class="btn-close" aria-label="모달 닫기">✕</button>
+            </div>
+            <div class="modal-content">
+                <p class="modal-intro">
+                    단소는 <strong>중(仲), 임(林), 무(無), 황(潢), 태(汰)</strong> 다섯 가지 음을 주로 연주합니다.<br>
+                    아래 표를 보고 손가락으로 지공을 막아보세요!
+                </p>
+
+                <div class="fingering-table-wrap">
+                    <table class="fingering-table">
+                        <thead>
+                            <tr>
+                                <th>율명</th>
+                                <th>한글</th>
+                                <th>서양 계이름</th>
+                                <th>제1공(뒤)</th>
+                                <th>제2공(앞)</th>
+                                <th>제3공(앞)</th>
+                                <th>제4공(앞)</th>
+                                <th>소리 내는 요령</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="highlight-han">仲</td>
+                                <td>중</td>
+                                <td>라♭ (Ab4)</td>
+                                <td><span class="dot closed">●</span> 막음</td>
+                                <td><span class="dot closed">●</span> 막음</td>
+                                <td><span class="dot closed">●</span> 막음</td>
+                                <td><span class="dot open">○</span> 열림</td>
+                                <td>맑고 따뜻한 보통 입김 (평취)</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight-han">林</td>
+                                <td>임</td>
+                                <td>시♭ (Bb4)</td>
+                                <td><span class="dot closed">●</span> 막음</td>
+                                <td><span class="dot closed">●</span> 막음</td>
+                                <td><span class="dot open">○</span> 열림</td>
+                                <td><span class="dot open">○</span> 열림</td>
+                                <td>맑고 청아한 입김</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight-han">無</td>
+                                <td>무</td>
+                                <td>도 (C5)</td>
+                                <td><span class="dot closed">●</span> 막음</td>
+                                <td><span class="dot open">○</span> 열림</td>
+                                <td><span class="dot open">○</span> 열림</td>
+                                <td><span class="dot open">○</span> 열림</td>
+                                <td>1공(뒤)만 막고 부드럽게 불기</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight-han">潢</td>
+                                <td>황</td>
+                                <td>미♭ (Eb5)</td>
+                                <td><span class="dot open">○</span> 열림</td>
+                                <td><span class="dot open">○</span> 열림</td>
+                                <td><span class="dot open">○</span> 열림</td>
+                                <td><span class="dot open">○</span> 열림</td>
+                                <td>모든 구멍을 열고 맑게 불기</td>
+                            </tr>
+                            <tr>
+                                <td class="highlight-han">汰</td>
+                                <td>태</td>
+                                <td>파 (F5)</td>
+                                <td><span class="dot open">○</span> 열림</td>
+                                <td><span class="dot closed">●</span> 막음</td>
+                                <td><span class="dot open">○</span> 열림</td>
+                                <td><span class="dot open">○</span> 열림</td>
+                                <td>2공만 막거나, 1·2·3공 막고 세게 불기(역취)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="guide-tips">
+                    <h3>💡 선생님의 꿀팁!</h3>
+                    <ul>
+                        <li><strong>자세:</strong> 태블릿을 책상 위에 살짝 비스듬히 놓고, 양손 손가락으로 화면 구멍을 짚으세요.</li>
+                        <li><strong>제1공 위치 맞추기:</strong> 내 손 크기에 맞게 왼쪽 위의 [제1공]을 편한 곳으로 드래그한 다음, [🔒 위치 잠김]을 눌러 고정하세요.</li>
+                        <li><strong>입김 불기:</strong> 태블릿 마이크(주로 위쪽이나 아래쪽 구멍)를 향해 "후~" 하고 가볍게 입김을 불면 소리가 납니다!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 스크립트 로드 순서: 오디오 -> 마이크 -> 단소모델 -> 악보데이터 -> 메인앱 -->
+    <script src="js/audio.js"></script>
+    <script src="js/mic.js"></script>
+    <script src="js/danso.js"></script>
+    <script src="js/songs.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
